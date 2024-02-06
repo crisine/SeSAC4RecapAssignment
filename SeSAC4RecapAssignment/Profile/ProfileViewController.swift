@@ -8,6 +8,12 @@
 import UIKit
 import TextFieldEffects
 
+enum NickNameError: Error {
+    case outOfRange
+    case containsNotAllowedCharacters
+    case containsNumber
+}
+
 class ProfileViewController: UIViewController {
 
     
@@ -15,7 +21,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileCornerIconImageView: UIImageView!
     @IBOutlet weak var nicknameTextField: UITextField!
-    @IBOutlet weak var nickNameUnderLineview: UIView!
+    @IBOutlet weak var nicknameUnderLineview: UIView!
     @IBOutlet weak var nicknameStatusLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
     
@@ -53,7 +59,7 @@ class ProfileViewController: UIViewController {
         nicknameTextField.font = .customFont(.secondaryTitle)
         nicknameTextField.textColor = .textColor
         
-        nickNameUnderLineview.backgroundColor = .gray
+        nicknameUnderLineview.backgroundColor = .gray
         
         nicknameStatusLabel.textColor = .pointColor
         nicknameStatusLabel.text = "2글자 이상 10글자 미만의 닉네임을 입력해주세요"
@@ -91,21 +97,25 @@ class ProfileViewController: UIViewController {
     
     @IBAction func didChangedTextOnNicknameTextField(_ sender: UITextField) {
     
-        guard let text = sender.text else { return }
+        guard let nickname = sender.text else { return }
         
-        if text.count < 2 || text.count > 10 {
-            nicknameStatusLabel.text = "2글자 이상 10글자 미만으로 설정해주세요."
-        } else if text.range(of: "[@#$%]", options: .regularExpression) != nil {
-            nicknameStatusLabel.text = "닉네임에 @, #, $, % 는 포함할 수 없어요"
-        } else if text.range(of: "[0-9]", options: .regularExpression) != nil {
-            nicknameStatusLabel.text = "닉네임에 숫자는 포함할 수 없어요"
-        } else {
+        do {
+            isValidNickname = try checkIsValidNickname(nickname: nickname)
             nicknameStatusLabel.text = "사용할 수 있는 닉네임이에요"
-            isValidNickname = true
-            return
+        } catch {
+            switch error {
+            case NickNameError.outOfRange:
+                nicknameStatusLabel.text = "2글자 이상 10글자 미만으로 설정해주세요."
+            case NickNameError.containsNotAllowedCharacters:
+                nicknameStatusLabel.text = "닉네임에 @, #, $, % 는 포함할 수 없어요"
+            case NickNameError.containsNumber:
+                nicknameStatusLabel.text = "닉네임에 숫자는 포함할 수 없어요"
+            default:
+                nicknameStatusLabel.text = "정의되지 않은 오류 발생"
+            }
+            
+            isValidNickname = false
         }
-        
-        isValidNickname = false
     }
     
     
@@ -146,5 +156,17 @@ class ProfileViewController: UIViewController {
         
         sceneDelegate?.window?.rootViewController = vc
         sceneDelegate?.window?.makeKeyAndVisible()
+    }
+    
+    func checkIsValidNickname(nickname: String) throws -> Bool {
+        if nickname.count < 2 || nickname.count > 10 {
+            throw NickNameError.outOfRange
+        } else if nickname.range(of: "[@#$%]", options: .regularExpression) != nil {
+            throw NickNameError.containsNotAllowedCharacters
+        } else if nickname.range(of: "[0-9]", options: .regularExpression) != nil {
+            throw NickNameError.containsNumber
+        } else {
+            return true
+        }
     }
 }

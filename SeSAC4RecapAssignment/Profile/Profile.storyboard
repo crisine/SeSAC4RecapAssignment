@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hvj-AE-RQm">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -103,9 +102,9 @@
                     <navigationItem key="navigationItem" id="Mc6-zG-4XJ"/>
                     <connections>
                         <outlet property="confirmButton" destination="3yy-Kn-rMV" id="j4w-QZ-ngH"/>
-                        <outlet property="nickNameUnderLineview" destination="UA1-Om-HFT" id="nAI-mp-hCp"/>
                         <outlet property="nicknameStatusLabel" destination="Cys-Lo-5rw" id="aYZ-Gd-UoV"/>
                         <outlet property="nicknameTextField" destination="IJB-IU-Wlh" id="4BS-mG-Uvl"/>
+                        <outlet property="nicknameUnderLineview" destination="UA1-Om-HFT" id="nAI-mp-hCp"/>
                         <outlet property="profileCornerIconImageView" destination="6zF-XL-AVm" id="jwU-4G-WD1"/>
                         <outlet property="profileImageView" destination="Nph-wj-mAM" id="JuD-4l-Hw5"/>
                         <outlet property="profileView" destination="Nro-TM-F49" id="X8X-Qk-9eZ"/>
